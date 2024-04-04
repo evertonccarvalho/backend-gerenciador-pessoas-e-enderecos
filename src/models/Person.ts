@@ -4,7 +4,7 @@ import { addressSchema, IAddresses } from "./Addresses";
 export const personSchema = z.object({
   name: z.string(),
   sex: z.string(),
-  dateOfBirth: z.date(),
+  dateOfBirth: z.coerce.date(),
   maritalStatus: z.string(),
 });
 
