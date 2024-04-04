@@ -28,7 +28,7 @@ model Person {
   id            String      @id @default(cuid())
   name          String
   sex           String
-  dateOfBirth   DateTime    @db.Date
+  dateOfBirth   DateTime
   maritalStatus String
   addresses     Addresses[]
 }

@@ -44,7 +44,7 @@ export class AuthController {
 			const accessToken = await authService.handleLogin(email, password, refreshToken!);
 
 			if (!accessToken) {
-				return res.status(401).json({ message: 'Credenciais inválidas' });
+				return res.status(401).json({ message: 'Invalid credentials' });
 			}
 
 			if (accessToken === 'INCORRECT_PASSWORD') {
