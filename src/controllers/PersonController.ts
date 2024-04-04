@@ -31,7 +31,7 @@ export class PersonController {
   async handleIndex(req: Request, res: Response): Promise<void> {
     try {
       const personList = await personService.index();
-      res.status(200).json({ success: true, message: "Listagem bem-sucedida.", persons: personList });
+      res.status(200).json(personList);
     } catch (error) {
       console.error('Erro:', error);
       res.status(500).json({ message: 'Internal Server Error' });

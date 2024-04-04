@@ -5,25 +5,6 @@ import { AddressDTO, IAddresses, addressSchema, } from '../models/Addresses';
 
 export class AddressesService {
 
-	async index(personId: string): Promise<AddressDTO[]> {
-		const addresses = await db.addresses.findMany({
-			where: { personId: personId },
-			select: {
-				id: true,
-				personId: true,
-				address: true,
-				number: true,
-				complement: true,
-				zipcode: true,
-				city: true,
-				neighborhood: true,
-				state: true,
-				isDefault: true,
-				created_at: true,
-			}
-		});
-		return addresses.map(address => new AddressDTO(address));
-	}
 
 	async create(personId: string, data: z.infer<typeof addressSchema>): Promise<AddressDTO> {
 		try {
@@ -132,7 +113,36 @@ export class AddressesService {
 		}
 	}
 
-	async toggleDefaultAddress(personId: string, addressId: string, setDefault: boolean): Promise<void> {
+	async index(personId: string): Promise<AddressDTO[]> {
+		const addresses = await db.addresses.findMany({
+			where: { personId: personId },
+			select: {
+				id: true,
+				personId: true,
+				address: true,
+				number: true,
+				complement: true,
+				zipcode: true,
+				city: true,
+				neighborhood: true,
+				state: true,
+				isDefault: true,
+				created_at: true,
+			}
+		});
+		return addresses.map(address => new AddressDTO(address));
+	}
+
+	async delete(id: string, personId: string): Promise<void> {
+		await db.addresses.delete({
+			where: {
+				id,
+				personId,
+			}
+		});
+	}
+
+	async toggleDefaultAddress(addressId: string, personId: string, setDefault: boolean): Promise<void> {
 		if (setDefault) {
 			// Desmarcar o endereço padrão anterior (se houver)
 			await db.addresses.updateMany({
@@ -157,12 +167,4 @@ export class AddressesService {
 		});
 	}
 
-	async delete(id: string, personId: string): Promise<void> {
-		await db.addresses.delete({
-			where: {
-				id,
-				personId,
-			}
-		});
-	}
 }
