@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const addressCreateSchema = z.object({
+export const addressSchema = z.object({
 	address: z.string(),
 	number: z.coerce.number(),
 	complement: z.string(),
@@ -11,20 +11,9 @@ export const addressCreateSchema = z.object({
 	isDefault: z.boolean().default(false),
 });
 
-export const addressUpdateSchema = z.object({
-	address: z.string(),
-	number: z.coerce.number(),
-	complement: z.string(),
-	zipcode: z.string(),
-	city: z.string(),
-	neighborhood: z.string(),
-	state: z.string(),
-	isDefault: z.boolean().optional(),
-});
-
-export interface IAddress {
+export interface IAddresses {
 	id: String;
-	peopleId: string;
+	personId: string;
 	address: string;
 	number: number;
 	complement: string;
@@ -38,7 +27,7 @@ export interface IAddress {
 
 export class AddressDTO {
 	id: String;
-	peopleId: string;
+	personId: string;
 	address: string;
 	number: number;
 	complement: string;
@@ -49,9 +38,9 @@ export class AddressDTO {
 	isDefault: boolean;
 	created_at: Date | null;
 
-	constructor(address: IAddress) {
+	constructor(address: IAddresses) {
 		this.id = address.id;
-		this.peopleId = address.peopleId;
+		this.personId = address.personId;
 		this.address = address.address;
 		this.number = address.number;
 		this.complement = address.complement;

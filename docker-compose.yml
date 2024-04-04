@@ -3,7 +3,7 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: apipeoples
+      POSTGRES_USER: apipersons
       POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: mydb
     ports:

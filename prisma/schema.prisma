@@ -24,7 +24,7 @@ model RefreshToken {
   createdAt DateTime @default(now())
 }
 
-model Peoble {
+model Person {
   id            String      @id @default(cuid())
   name          String
   sex           String
@@ -35,7 +35,7 @@ model Peoble {
 
 model Addresses {
   id           String    @id @default(cuid())
-  peopleId     String
+  personId     String
   address      String
   number       Int
   complement   String
@@ -45,7 +45,7 @@ model Addresses {
   state        String
   isDefault    Boolean   @default(false)
   created_at   DateTime? @default(now()) @db.Timestamptz(6)
-  people       Peoble    @relation(fields: [peopleId], references: [id])
+  person       Person    @relation(fields: [personId], references: [id])
 
-  @@index([peopleId])
+  @@index([personId])
 }
