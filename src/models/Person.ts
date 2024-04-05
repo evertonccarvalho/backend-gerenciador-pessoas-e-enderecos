@@ -7,6 +7,7 @@ export const personSchema = z.object({
   sex: z.string(),
   dateOfBirth: z.coerce.date(),
   maritalStatus: z.string(),
+  addresses: addressSchema
 });
 
 export interface IPerson {
@@ -41,8 +42,10 @@ export class PersonDTO {
     this.dateOfBirth = person.dateOfBirth;
     this.maritalStatus = person.maritalStatus;
     this.addresses = person.addresses;
+
     this.currentAge = age;
     this.daysUntilNextBirthday = isToday(person.dateOfBirth) ? 0 : daysUntilBirthday;
     this.birthdayMessage = this.daysUntilNextBirthday === 0 ? "Feliz aniversário!" : `Falta${daysUntilBirthday === 1 ? '' : 'm'} ${Math.abs(daysUntilBirthday)} dia${daysUntilBirthday === 1 ? '' : 's'} para o seu aniversário.`;
+
   }
 }

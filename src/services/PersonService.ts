@@ -7,14 +7,23 @@ export class PersonService {
   async create(data: z.infer<typeof personSchema>): Promise<PersonDTO> {
     try {
       const validatedData = personSchema.parse(data);
+
       const createdPerson = await db.person.create({
         data: {
           name: validatedData.name,
           sex: validatedData.sex,
           dateOfBirth: validatedData.dateOfBirth,
           maritalStatus: validatedData.maritalStatus,
+          addresses: {
+            create: validatedData.addresses
+          }
+        },
+        include: {
+          addresses: true
         }
       });
+
+
       return new PersonDTO(createdPerson);
     } catch (error) {
       if (error instanceof z.ZodError) {
