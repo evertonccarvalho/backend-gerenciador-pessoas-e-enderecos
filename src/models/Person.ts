@@ -7,7 +7,7 @@ export const personSchema = z.object({
   sex: z.string(),
   dateOfBirth: z.coerce.date(),
   maritalStatus: z.string(),
-  addresses: addressSchema
+  addresses: addressSchema.optional()
 });
 
 export interface IPerson {
@@ -29,6 +29,7 @@ export class PersonDTO {
   birthdayMessage: string;
   daysUntilNextBirthday: number;
   currentAge: number;
+  defaultAddress?: IAddresses; // Adicionando a propriedade defaultAddress
 
   constructor(person: IPerson) {
     const today = new Date();
@@ -42,6 +43,7 @@ export class PersonDTO {
     this.dateOfBirth = person.dateOfBirth;
     this.maritalStatus = person.maritalStatus;
     this.addresses = person.addresses;
+    this.defaultAddress = person.addresses?.find(address => address.isDefault);
 
     this.currentAge = age;
     this.daysUntilNextBirthday = isToday(person.dateOfBirth) ? 0 : daysUntilBirthday;

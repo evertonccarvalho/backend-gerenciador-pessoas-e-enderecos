@@ -43,7 +43,7 @@ export class PersonController {
       const { id } = req.params;
       const person = await personService.getById(id);
       if (person) {
-        res.status(200).json({ success: true, message: "Pessoa encontrada.", person });
+        res.status(200).json(person);
       } else {
         res.status(404).json({ success: false, message: "Pessoa não encontrada." });
       }
