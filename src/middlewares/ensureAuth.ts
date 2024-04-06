@@ -12,7 +12,7 @@ const ensureAuth = (req: Request, res: Response, next: NextFunction) => {
 			res.status(401).json({ msg: '"INVALID_JWT"' });
 		} else {
 			console.log(req.user)
-			req.user = decoded !== null ? decoded : undefined; // Verifica se o usuário não é nulo
+			req.user = decoded !== null ? decoded : undefined;
 			next();
 		}
 	} catch (error) {
