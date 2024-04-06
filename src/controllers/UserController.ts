@@ -22,17 +22,26 @@ export class UserController {
 
 	async show(req: Request, res: Response): Promise<void> {
 		try {
-			const userId: string = req.user.id;
-			const user = await userService.show(userId);
-			if (user) {
-				res.status(200).json(user);
+			const { user } = req;
+			if (user && typeof user !== 'string' && 'id' in user) {
+				const userId = user.id;
+				console.log(userId);
+				const fetchedUser = await userService.show(userId);
+				if (fetchedUser) {
+					res.status(200).json(fetchedUser);
+				} else {
+					res.status(404).json({ message: 'User not found' });
+				}
 			} else {
-				res.status(404).json({ message: 'User not found' });
+				res.status(401).json({ message: 'Unauthorized' });
 			}
 		} catch (error) {
 			console.error('Erro:', error);
 			res.status(500).json({ message: 'Internal Server Error' });
 		}
 	}
+
+
+
 
 }

@@ -1,21 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
-import { JwtPayload } from 'jsonwebtoken';
 import { verifyAccessToken } from '../api/lib/jwt.handle';
 
-interface RequestExt extends Request {
-	user?: string | JwtPayload;
-}
 
-const ensureAuth = (req: RequestExt, res: Response, next: NextFunction) => {
+const ensureAuth = (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const userJWT = req.headers.authorization || null;
 		const jwt = userJWT?.split(' ').pop();
-		const user = verifyAccessToken(`${jwt}`);
+		const decoded = verifyAccessToken(`${jwt}`);
 
-		if (!user) {
+		if (!decoded) {
 			res.status(401).json({ msg: '"INVALID_JWT"' });
 		} else {
-			req.user = user;
+			console.log(req.user)
+			req.user = decoded !== null ? decoded : undefined; // Verifica se o usuário não é nulo
 			next();
 		}
 	} catch (error) {

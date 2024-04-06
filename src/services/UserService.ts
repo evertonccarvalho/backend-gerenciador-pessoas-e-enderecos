@@ -40,6 +40,12 @@ export class UserService {
 				email: true,
 			},
 		});
-		return user && new UserDTO(user)
+
+		if (user) {
+			return new UserDTO(user);
+		} else {
+			return null;
+		}
 	}
+
 }
