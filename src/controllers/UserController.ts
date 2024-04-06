@@ -25,7 +25,6 @@ export class UserController {
 			const { user } = req;
 			if (user && typeof user !== 'string' && 'id' in user) {
 				const userId = user.id;
-				console.log(userId);
 				const fetchedUser = await userService.show(userId);
 				if (fetchedUser) {
 					res.status(200).json(fetchedUser);

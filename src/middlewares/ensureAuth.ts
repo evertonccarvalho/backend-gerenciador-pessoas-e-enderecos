@@ -11,7 +11,6 @@ const ensureAuth = (req: Request, res: Response, next: NextFunction) => {
 		if (!decoded) {
 			res.status(401).json({ msg: '"INVALID_JWT"' });
 		} else {
-			console.log(req.user)
 			req.user = decoded !== null ? decoded : undefined;
 			next();
 		}
