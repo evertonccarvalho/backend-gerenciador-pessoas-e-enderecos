@@ -9,7 +9,7 @@ export class PersonController {
     try {
       const validatedData = personSchema.parse(req.body);
       const person = await personService.create(validatedData);
-      res.status(201).json({ success: true, message: "Criado com sucesso.", person });
+      res.status(201).json(person);
     } catch (error) {
       console.error('Erro:', error);
       res.status(500).json({ message: 'Internal Server Error' });
