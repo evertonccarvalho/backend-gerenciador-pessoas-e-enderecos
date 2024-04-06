@@ -100,6 +100,7 @@ export class AuthService {
 			const data = {
 				accessToken: accessToken,
 				refreshToken: newRefreshToken,
+				user: userData,
 			};
 
 			return data;
@@ -119,18 +120,19 @@ export class AuthService {
 		const data = {
 			token: accessToken,
 			refreshToken: newRefreshToken,
+			user: userData,
+
 		};
 
 		return data
 	};
 	async handleVeirfy(accessToken: string) {
 		try {
-			const payload = verifyAccessToken(accessToken)
-			// console.log("payload", payload)
-			if (!payload) {
+			const user = verifyAccessToken(accessToken)
+			if (!user) {
 				throw new Error("TOKEN INVALIDO")
 			}
-			return payload
+			return user
 		} catch (error) {
 			console.log(error)
 		}
@@ -155,7 +157,7 @@ export class AuthService {
 						console.log('Attempted refresh token reuse!');
 						await db.refreshToken.deleteMany({
 							where: {
-								userId: payload.id
+								userId: payload.userId
 							}
 						});
 					}
