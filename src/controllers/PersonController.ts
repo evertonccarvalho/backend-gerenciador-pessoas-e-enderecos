@@ -5,18 +5,14 @@ import { personSchema } from '../models/Person';
 const personService = new PersonService();
 
 export class PersonController {
-  private handleError(res: Response, error: any): void {
-    console.error('Erro:', error);
-    res.status(500).json({ message: 'Internal Server Error', error });
-  }
-
   async handleCreate(req: Request, res: Response): Promise<void> {
     try {
       const validatedData = personSchema.parse(req.body);
       const person = await personService.create(validatedData);
       res.status(201).json(person);
     } catch (error) {
-      this.handleError(res, error);
+      console.error('Erro:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
     }
   }
 
@@ -27,20 +23,18 @@ export class PersonController {
       const updatedPerson = await personService.update(id, validatedData);
       res.status(200).json({ success: true, message: "Atualizado com sucesso.", person: updatedPerson });
     } catch (error) {
-      this.handleError(res, error);
+      console.error('Erro:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
     }
   }
 
   async handleIndex(req: Request, res: Response): Promise<void> {
     try {
       const personList = await personService.index();
-      if (!personList || personList.length === 0) {
-        res.status(404).json({ message: 'No data available' });
-      } else {
-        res.status(200).json(personList);
-      }
+      res.status(200).json(personList);
     } catch (error) {
-      this.handleError(res, error);
+      console.error('Erro:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
     }
   }
 
@@ -54,7 +48,8 @@ export class PersonController {
         res.status(404).json({ success: false, message: "Pessoa não encontrada." });
       }
     } catch (error) {
-      this.handleError(res, error);
+      console.error('Erro:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
     }
   }
 
@@ -64,7 +59,8 @@ export class PersonController {
       await personService.delete(id);
       res.status(200).json({ success: true, message: "Pessoa deletada com sucesso." });
     } catch (error) {
-      this.handleError(res, error);
+      console.error('Erro:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
     }
   }
 }
