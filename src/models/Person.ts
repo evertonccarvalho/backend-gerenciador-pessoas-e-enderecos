@@ -42,9 +42,9 @@ export class PersonDTO {
     let birthdayMessage;
 
     if (daysUntilBirthday === 0) {
-      birthdayMessage = "Feliz aniversário!";
+      birthdayMessage = `Feliz ${age}º aniversário!`;
     } else {
-      birthdayMessage = `Faltam ${daysUntilBirthday + 366} dia${daysUntilBirthday + 366 === 1 ? '' : 's'} para o seu aniversário.`;
+      birthdayMessage = `Faltam ${daysUntilBirthday + 366} dia${daysUntilBirthday + 366 === 1 ? '' : 's'} para o seu ${age + 1}º aniversário.`;
     }
 
 
