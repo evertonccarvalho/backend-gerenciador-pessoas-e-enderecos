@@ -42,6 +42,8 @@ export class PersonDTO {
 
     if (daysUntilBirthday === 0) {
       birthdayMessage = "Feliz aniversário!";
+    } else if (daysUntilBirthday === 1) {
+      birthdayMessage = "Seu aniversário é amanhã!";
     } else {
       let absoluteDaysUntilBirthday = Math.abs(daysUntilBirthday);
       if (daysUntilBirthday < 0) {
@@ -50,6 +52,7 @@ export class PersonDTO {
         birthdayMessage = `Faltam ${daysUntilBirthday} dias para o seu aniversário.`;
       }
     }
+
 
     this.birthdayMessage = birthdayMessage;
     this.currentAge = age;
