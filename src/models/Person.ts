@@ -24,19 +24,12 @@ export class PersonDTO {
   name: string;
   sex: string;
   dateOfBirth: Date;
+  birthdayMessage: string;
   maritalStatus: string;
   addresses?: IAddresses[];
-  birthdayMessage: string;
-  daysUntilNextBirthday: number;
-  currentAge: number;
-  defaultAddress?: IAddresses; // Adicionando a propriedade defaultAddress
+  defaultAddress?: IAddresses;
 
   constructor(person: IPerson) {
-    const today = new Date();
-    const age = differenceInYears(today, person.dateOfBirth);
-    const nextBirthday = addYears(person.dateOfBirth, age);
-    const daysUntilBirthday = differenceInDays(nextBirthday, today);
-
     this.id = person.id;
     this.name = person.name;
     this.sex = person.sex;
@@ -45,9 +38,25 @@ export class PersonDTO {
     this.addresses = person.addresses;
     this.defaultAddress = person.addresses?.find(address => address.isDefault);
 
-    this.currentAge = age;
-    this.daysUntilNextBirthday = isToday(person.dateOfBirth) ? 0 : daysUntilBirthday;
-    this.birthdayMessage = this.daysUntilNextBirthday === 0 ? "Feliz aniversário!" : `Falta${daysUntilBirthday === 1 ? '' : 'm'} ${Math.abs(daysUntilBirthday)} dia${daysUntilBirthday === 1 ? '' : 's'} para o seu aniversário.`;
+    const today = new Date();
+    const nextBirthdayYear = today.getFullYear() + 1;
+    const nextBirthday = new Date(nextBirthdayYear, person.dateOfBirth.getMonth(), person.dateOfBirth.getDate());
+    const daysUntilBirthday = Math.ceil((nextBirthday.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+    this.birthdayMessage = daysUntilBirthday === 364 ? "Feliz aniversário!" : `Faltam ${daysUntilBirthday} dia${daysUntilBirthday === 1 ? '' : 's'} para o seu aniversário.`;
 
   }
+}
+
+
+export function age(date: Date) {
+  const
+    birthdate = new Date(date),
+    today = new Date();
+
+  let age = today.getFullYear() - birthdate.getFullYear();
+
+  if (birthdate.getDate() >= today.getDate() && birthdate.getMonth() >= today.getMonth()) age--;
+
+  return age;
 }
