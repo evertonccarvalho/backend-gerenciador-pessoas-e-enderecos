@@ -24,12 +24,37 @@ export class PersonDTO {
   name: string;
   sex: string;
   dateOfBirth: Date;
-  birthdayMessage: string;
   maritalStatus: string;
   addresses?: IAddresses[];
-  defaultAddress?: IAddresses;
+  birthdayMessage: string;
+  daysUntilNextBirthday: number;
+  currentAge: number;
+  defaultAddress?: IAddresses; // Adicionando a propriedade defaultAddress
 
   constructor(person: IPerson) {
+
+    const today = new Date();
+    const age = differenceInYears(today, person.dateOfBirth);
+    const nextBirthday = addYears(person.dateOfBirth, age);
+    const daysUntilBirthday = differenceInDays(nextBirthday, today);
+
+    let birthdayMessage;
+
+    if (daysUntilBirthday === 0) {
+      birthdayMessage = "Feliz aniversário!";
+    } else {
+      let absoluteDaysUntilBirthday = Math.abs(daysUntilBirthday);
+      if (daysUntilBirthday < 0) {
+        birthdayMessage = `Seu aniversário foi há ${absoluteDaysUntilBirthday} dia${absoluteDaysUntilBirthday === 1 ? '' : 's'}.`;
+      } else {
+        birthdayMessage = `Faltam ${daysUntilBirthday} dias para o seu aniversário.`;
+      }
+    }
+
+    this.birthdayMessage = birthdayMessage;
+    this.currentAge = age;
+    this.daysUntilNextBirthday = daysUntilBirthday;
+
     this.id = person.id;
     this.name = person.name;
     this.sex = person.sex;
@@ -38,25 +63,6 @@ export class PersonDTO {
     this.addresses = person.addresses;
     this.defaultAddress = person.addresses?.find(address => address.isDefault);
 
-    const today = new Date();
-    const nextBirthdayYear = today.getFullYear() + 1;
-    const nextBirthday = new Date(nextBirthdayYear, person.dateOfBirth.getMonth(), person.dateOfBirth.getDate());
-    const daysUntilBirthday = Math.ceil((nextBirthday.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-
-    this.birthdayMessage = daysUntilBirthday === 364 ? "Feliz aniversário!" : `Faltam ${daysUntilBirthday} dia${daysUntilBirthday === 1 ? '' : 's'} para o seu aniversário.`;
 
   }
-}
-
-
-export function age(date: Date) {
-  const
-    birthdate = new Date(date),
-    today = new Date();
-
-  let age = today.getFullYear() - birthdate.getFullYear();
-
-  if (birthdate.getDate() >= today.getDate() && birthdate.getMonth() >= today.getMonth()) age--;
-
-  return age;
 }
