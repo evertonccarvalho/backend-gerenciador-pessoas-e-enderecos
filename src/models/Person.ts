@@ -33,6 +33,7 @@ export class PersonDTO {
 
   constructor(person: IPerson) {
 
+
     const today = new Date();
     const age = differenceInYears(today, person.dateOfBirth);
     const nextBirthday = addYears(person.dateOfBirth, age);
@@ -42,15 +43,8 @@ export class PersonDTO {
 
     if (daysUntilBirthday === 0) {
       birthdayMessage = "Feliz aniversário!";
-    } else if (daysUntilBirthday === 1) {
-      birthdayMessage = "Seu aniversário é amanhã!";
     } else {
-      let absoluteDaysUntilBirthday = Math.abs(daysUntilBirthday);
-      if (daysUntilBirthday < 0) {
-        birthdayMessage = `Seu aniversário foi há ${absoluteDaysUntilBirthday} dia${absoluteDaysUntilBirthday === 1 ? '' : 's'}.`;
-      } else {
-        birthdayMessage = `Faltam ${daysUntilBirthday} dias para o seu aniversário.`;
-      }
+      birthdayMessage = `Faltam ${daysUntilBirthday + 366} dia${daysUntilBirthday + 366 === 1 ? '' : 's'} para o seu aniversário.`;
     }
 
 
